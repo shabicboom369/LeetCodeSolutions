@@ -1,0 +1,73 @@
+class Solution {
+    public String removeOuterParentheses(String s){
+        
+        Stack<Character> stk = new Stack<Character>();
+        
+        StringBuilder Finalstr = new StringBuilder();
+        
+        String TempStr = new String();
+        
+        /* This is the meat of the code*/
+        for(char c: s.toCharArray()){
+            
+            /*Collects the characters from the string and store it in a String*/
+            TempStr = TempStr + c;
+            
+            /*
+            The push and pop thing bascially helps finds the breakpoint in the vaild parentheses string so we can remove the outermost parentheses.             The reasoning is because since the parentheses is even and comes in pairs when we go through the string there will be times that the               stack will be empty since we have gone through all the pairs in substring before continuing to the next set of parentheses in the                   string.
+            */ 
+            if(c == '('){
+                stk.push(c);
+            }
+            
+            if(c == ')' && !(stk.empty())){
+                stk.pop(); 
+            }
+            
+            /*
+             When the stk is empty we have a subset of a primitive string that still have a outermost parentheses so we the substring method that                return a string with outermost parentheses taken out. Finally we append it to stringbuilder and we reset temp so we can get out next                set of primitive strings that needs deconstruting.     
+            */
+            if(stk.empty()){
+                
+               TempStr = TempStr.substring(1,TempStr.length()- 1);
+               
+               Finalstr.append(TempStr);
+               
+               TempStr = ""; // reseting temp for the next primitive decomposition.
+            }
+        }
+        
+        return Finalstr.toString();
+    }
+}
+/* Information: 
+
+ Goal: Return the string after removing the outermost parentheses of every primitive string in the
+ primitive decomposition of s.
+ 
+ The Process:
+    
+    Data Structured Used:
+     - Stack: Its job is just to let me know when we reach the breakpoint so we can successful find the Outermost parentheses for that valid                     parentheses
+              -Ex : - (()()) |BreakPoint| (()) 
+     - String: the string collects all the parentheses and removes the outermost parentheses using the substring function.
+     - StringBuilder: This finally takes the parentheses (with the parentheses removed) and concate them all together so we return a string after                         removing the outermost parentheses.      
+    Runtime O(n):
+        - the time it take to get through the string
+***************************************************************************************************************************************************
+ ---------------------------------Just ignore this stuff just some thing I was picking out of the descripiton.-------------------------------------
+ 
+ A valid parentheses string are:
+    - empty: ""
+    - ( + A + ) : A is a valid parentheses and "+" represent concatenation 
+        translation of (+ A +) is (())
+    - A + B: where A and B are valid parentheses and "+" repersent concatentaion
+        translation: ()()
+    
+ A String is primitive if it is:
+    - nonempty
+    - does no exist a way to split it into s = A + B (A and B are nonempty valid parentheses strings)
+    
+ A primitive decomposition: 
+    - is the break down of complex valid parentheses
+*/
